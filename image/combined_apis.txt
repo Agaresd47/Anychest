@@ -1,0 +1,64 @@
+Module: image_trans
+===================
+add_gaussian_noise(drr: numpy.ndarray, mask: numpy.ndarray, mean: float, std_dev: float) -> tuple
+add_poisson_noise(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+add_rician_noise(drr: numpy.ndarray, mask: numpy.ndarray, sigma: float) -> tuple
+add_speckle_noise(drr: numpy.ndarray, mask: numpy.ndarray, variance: float) -> tuple
+adjust_brightness(drr: numpy.ndarray, mask: numpy.ndarray, beta: float) -> tuple
+adjust_contrast(drr: numpy.ndarray, mask: numpy.ndarray, alpha: float) -> tuple
+adjust_contrast_with_curve(drr: numpy.ndarray, mask: numpy.ndarray, control_points: list) -> tuple
+apply_gamma_adjustment(drr: numpy.ndarray, mask: numpy.ndarray, gamma: float) -> tuple
+apply_transformations(drr: numpy.ndarray, mask: numpy.ndarray, transform_plan: dict) -> tuple
+axis_aligned_flip(drr: numpy.ndarray, mask: numpy.ndarray, direction: str) -> tuple
+bias_field_simulation(drr: numpy.ndarray, mask: numpy.ndarray, max_bias: float) -> tuple
+boundary_smoothing(drr: numpy.ndarray, mask: numpy.ndarray, kernel_size: int) -> tuple
+combine_images(soft_tissue: numpy.ndarray, rib: numpy.ndarray, spine: numpy.ndarray, other_bone: numpy.ndarray, combine_plan: dict) -> numpy.ndarray
+gaussian_blur(drr: numpy.ndarray, mask: numpy.ndarray, sigma: float) -> tuple
+gaussian_sharpening(drr: numpy.ndarray, mask: numpy.ndarray, amount: float) -> tuple
+histogram_equalization(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+load_image(image_path: str) -> numpy.ndarray
+perspective_transform(drr: numpy.ndarray, mask: numpy.ndarray, points: list) -> tuple
+post_processing(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+random_occlusions(drr: numpy.ndarray, mask: numpy.ndarray, num_occlusions: int, size: tuple) -> tuple
+rotate_image(drr: numpy.ndarray, mask: numpy.ndarray, angle: float) -> tuple
+saving(image: numpy.ndarray, save_path: str) -> None
+spatial_cropping(drr: numpy.ndarray, mask: numpy.ndarray, crop_size: tuple) -> tuple
+zoom_and_crop(drr: numpy.ndarray, mask: numpy.ndarray, scale: float) -> tuple
+
+Module: noise_trans
+===================
+add_gaussian_noise(drr: numpy.ndarray, mask: numpy.ndarray, mean: float, std_dev: float) -> tuple
+add_poisson_noise(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+add_rician_noise(drr: numpy.ndarray, mask: numpy.ndarray, sigma: float) -> tuple
+add_speckle_noise(drr: numpy.ndarray, mask: numpy.ndarray, variance: float) -> tuple
+
+Module: geometric_trans
+=======================
+axis_aligned_flip(drr: numpy.ndarray, mask: numpy.ndarray, direction: str) -> tuple
+perspective_transform(drr: numpy.ndarray, mask: numpy.ndarray, points: list) -> tuple
+random_occlusions(drr: numpy.ndarray, mask: numpy.ndarray, num_occlusions: int, size: tuple) -> tuple
+rotate_image(drr: numpy.ndarray, mask: numpy.ndarray, angle: float) -> tuple
+spatial_cropping(drr: numpy.ndarray, mask: numpy.ndarray, crop_size: tuple) -> tuple
+zoom_and_crop(drr: numpy.ndarray, mask: numpy.ndarray, scale: float) -> tuple
+
+Module: blur_sharpen_trans
+==========================
+gaussian_blur(drr: numpy.ndarray, mask: numpy.ndarray, sigma: float) -> tuple
+gaussian_sharpening(drr: numpy.ndarray, mask: numpy.ndarray, amount: float) -> tuple
+
+Module: intensity_trans
+=======================
+adjust_brightness(drr: numpy.ndarray, mask: numpy.ndarray, beta: float) -> tuple
+adjust_contrast(drr: numpy.ndarray, mask: numpy.ndarray, alpha: float) -> tuple
+adjust_contrast_with_curve(drr: numpy.ndarray, mask: numpy.ndarray, control_points: list) -> tuple
+apply_gamma_adjustment(drr: numpy.ndarray, mask: numpy.ndarray, gamma: float) -> tuple
+
+Module: advanced_image_adjustments
+==================================
+bias_field_simulation(drr: numpy.ndarray, mask: numpy.ndarray, max_bias: float) -> tuple
+boundary_smoothing(drr: numpy.ndarray, mask: numpy.ndarray, kernel_size: int) -> tuple
+histogram_equalization(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+
+Module: image_combine
+=====================
+

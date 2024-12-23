@@ -1,0 +1,367 @@
+Combined API Documentation
+==============================
+
+Table of Contents
+------------------
+- image_trans
+- noise_trans
+- geometric_trans
+- blur_sharpen_trans
+- intensity_trans
+- advanced_image_adjustments
+- image_combine
+
+image_trans
+-----------
+Python Library Documentation: module image_trans
+
+NAME
+    image_trans
+
+FUNCTIONS
+    apply_transformations(drr: numpy.ndarray, mask: numpy.ndarray, transform_plan: dict) -> tuple
+        Applies a series of transformations to the DRR image and mask in a specified order.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            transform_plan: A dictionary where the key is the method name and the value is a list of arguments.
+        Returns:
+            Tuple of transformed DRR and mask (NumPy arrays).
+
+    combine_images(soft_tissue: numpy.ndarray, rib: numpy.ndarray, spine: numpy.ndarray, other_bone: numpy.ndarray, combine_plan: dict) -> numpy.ndarray
+        Combines the four images into a single image using the specified plan.
+        Args:
+            soft_tissue: Soft tissue image (NumPy array).
+            rib: Rib image (NumPy array).
+            spine: Spine image (NumPy array).
+            other_bone: Other bone image (NumPy array).
+            combine_plan: Dictionary where key is the method name, and value is a list of arguments for that method.
+        Returns:
+            Combined image as a NumPy array.
+
+    load_image(image_path: str) -> numpy.ndarray
+        Loads an image as a grayscale (L mode) NumPy array.
+        Args:
+            image_path: Path to the image file.
+        Returns:
+            NumPy array of the grayscale image.
+
+    post_processing(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+        Empty shell for post-processing the transformed image and mask.
+        Args:
+            drr: The transformed DRR image (NumPy array).
+            mask: The transformed mask (NumPy array).
+        Returns:
+            Tuple of processed DRR and mask (NumPy arrays).
+
+    saving(image: numpy.ndarray, save_path: str) -> None
+        Saves the given image to the specified path.
+        Args:
+            image: The image to be saved (NumPy array).
+            save_path: Path where the image should be saved.
+        Returns:
+            None
+
+FILE
+    c:\users\agares\onedrive\0 research\anychest\image\image_trans.py
+
+
+
+noise_trans
+-----------
+Python Library Documentation: module noise_trans
+
+NAME
+    noise_trans
+
+FUNCTIONS
+    add_gaussian_noise(drr: numpy.ndarray, mask: numpy.ndarray, mean: float, std_dev: float) -> tuple
+        Adds Gaussian noise to the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            mean: Mean of the Gaussian noise.
+            std_dev: Standard deviation of the Gaussian noise.
+        Returns:
+            Tuple of transformed DRR and unchanged mask (NumPy arrays).
+
+    add_poisson_noise(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+            Adds Poisson noise to the DRR image.
+            Args:
+                drr: The input DRR image (NumPy array).
+                mask: The corresponding mask (NumPy array).
+            Returns:
+        -
+
+    add_rician_noise(drr: numpy.ndarray, mask: numpy.ndarray, sigma: float) -> tuple
+        Adds Rician noise to the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            sigma: Standard deviation of the Rician noise.
+        Returns:
+            Tuple of transformed DRR and unchanged mask (NumPy arrays).
+
+    add_speckle_noise(drr: numpy.ndarray, mask: numpy.ndarray, variance: float) -> tuple
+        Adds Speckle noise to the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            variance: Variance of the speckle noise.
+        Returns:
+            Tuple of transformed DRR and unchanged mask (NumPy arrays).
+
+FILE
+    c:\users\agares\onedrive\0 research\anychest\image\noise_trans.py
+
+
+
+geometric_trans
+---------------
+Python Library Documentation: module geometric_trans
+
+NAME
+    geometric_trans
+
+FUNCTIONS
+    axis_aligned_flip(drr: numpy.ndarray, mask: numpy.ndarray, direction: str) -> tuple
+        Flips the DRR image and mask along the specified axis.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            direction: 'horizontal' or 'vertical'.
+        Returns:
+            Tuple of flipped DRR and mask (NumPy arrays).
+
+    perspective_transform(drr: numpy.ndarray, mask: numpy.ndarray, points: list) -> tuple
+        Applies a perspective transformation to the DRR image and mask.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            points: List of 4 points defining the transformation.
+        Returns:
+            Tuple of transformed DRR and mask (NumPy arrays).
+
+    random_occlusions(drr: numpy.ndarray, mask: numpy.ndarray, num_occlusions: int, size: tuple) -> tuple
+        Adds random occlusions to the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            num_occlusions: Number of occlusions to apply.
+            size: Tuple (height, width) specifying the occlusion size.
+        Returns:
+            Tuple of occluded DRR and unchanged mask (NumPy arrays).
+
+    rotate_image(drr: numpy.ndarray, mask: numpy.ndarray, angle: float) -> tuple
+        Rotates the DRR image and mask by a specified angle.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            angle: The rotation angle in degrees.
+        Returns:
+            Tuple of rotated DRR and mask (NumPy arrays).
+
+    spatial_cropping(drr: numpy.ndarray, mask: numpy.ndarray, crop_size: tuple) -> tuple
+        Crops the DRR image and mask to a specified size.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            crop_size: Tuple (height, width) specifying the crop size.
+        Returns:
+            Tuple of cropped DRR and mask (NumPy arrays).
+
+    zoom_and_crop(drr: numpy.ndarray, mask: numpy.ndarray, scale: float) -> tuple
+        Applies a zoom effect followed by cropping to the DRR image and mask.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            scale: Zoom scale factor (>1 for zoom-in, <1 for zoom-out).
+        Returns:
+            Tuple of zoomed and cropped DRR and mask (NumPy arrays).
+
+FILE
+    c:\users\agares\onedrive\0 research\anychest\image\geometric_trans.py
+
+
+
+blur_sharpen_trans
+------------------
+Python Library Documentation: module blur_sharpen_trans
+
+NAME
+    blur_sharpen_trans
+
+FUNCTIONS
+    gaussian_blur(drr: numpy.ndarray, mask: numpy.ndarray, sigma: float) -> tuple
+        Applies Gaussian blur to the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            sigma: Standard deviation for Gaussian blur.
+        Returns:
+            Tuple of blurred DRR and unchanged mask (NumPy arrays).
+
+    gaussian_sharpening(drr: numpy.ndarray, mask: numpy.ndarray, amount: float) -> tuple
+        Enhances edge details in the DRR image using Gaussian sharpening.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            amount: Intensity of sharpening (higher value = stronger sharpening).
+        Returns:
+            Tuple of sharpened DRR and unchanged mask (NumPy arrays).
+
+FILE
+    c:\users\agares\onedrive\0 research\anychest\image\blur_sharpen_trans.py
+
+
+
+intensity_trans
+---------------
+Python Library Documentation: module intensity_trans
+
+NAME
+    intensity_trans
+
+FUNCTIONS
+    adjust_brightness(drr: numpy.ndarray, mask: numpy.ndarray, beta: float) -> tuple
+        Adjusts the brightness of the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            beta: Brightness adjustment factor (-100 to 100; negative = darker, positive = brighter).
+        Returns:
+            Tuple of brightness-adjusted DRR and unchanged mask (NumPy arrays).
+
+    adjust_contrast(drr: numpy.ndarray, mask: numpy.ndarray, alpha: float) -> tuple
+        Adjusts the contrast of the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            alpha: Contrast adjustment factor (e.g., 1.0 = no change, <1 = lower contrast, >1 = higher contrast).
+        Returns:
+            Tuple of contrast-adjusted DRR and unchanged mask (NumPy arrays).
+
+    adjust_contrast_with_curve(drr: numpy.ndarray, mask: numpy.ndarray, control_points: list) -> tuple
+        Adjusts the contrast of a DRR image based on intensity mapping defined by control points.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            control_points: List of tuples [(input1, output1), (input2, output2), ...].
+                Define the intensity mapping curve, where input is in [0, 255] and output is normalized [0, 1].
+        Returns:
+            Tuple of contrast-adjusted DRR and unchanged mask (NumPy arrays).
+
+    apply_gamma_adjustment(drr: numpy.ndarray, mask: numpy.ndarray, gamma: float) -> tuple
+        Adjusts the gamma of the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            gamma: Gamma value for adjustment (e.g., >1 = brighter, <1 = darker).
+        Returns:
+            Tuple of gamma-adjusted DRR and unchanged mask (NumPy arrays).
+
+FILE
+    c:\users\agares\onedrive\0 research\anychest\image\intensity_trans.py
+
+
+
+advanced_image_adjustments
+--------------------------
+Python Library Documentation: module advanced_image_adjustments
+
+NAME
+    advanced_image_adjustments
+
+FUNCTIONS
+    bias_field_simulation(drr: numpy.ndarray, mask: numpy.ndarray, max_bias: float) -> tuple
+        Simulates a bias field (brightness gradient) on the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            max_bias: Maximum intensity change for the bias field.
+        Returns:
+            Tuple of bias-field-simulated DRR and unchanged mask (NumPy arrays).
+
+    boundary_smoothing(drr: numpy.ndarray, mask: numpy.ndarray, kernel_size: int) -> tuple
+        Smooths the boundaries in the DRR image using a Gaussian blur.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+            kernel_size: Size of the Gaussian kernel for smoothing.
+        Returns:
+            Tuple of smoothed DRR and unchanged mask (NumPy arrays).
+
+    histogram_equalization(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
+        Applies histogram equalization to the DRR image.
+        Args:
+            drr: The input DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array).
+        Returns:
+            Tuple of histogram-equalized DRR and unchanged mask (NumPy arrays).
+
+FILE
+    c:\users\agares\onedrive\0 research\anychest\image\advanced_image_adjustments.py
+
+
+
+image_combine
+-------------
+Python Library Documentation: module image_combine
+
+NAME
+    image_combine
+
+CLASSES
+    builtins.object
+        ImageCombiner
+
+    class ImageCombiner(builtins.object)
+     |  A class containing methods for combining soft tissue, rib, spine, and other bone images.
+     |
+     |  Static methods defined here:
+     |
+     |  max_overlay(soft_tissue: numpy.ndarray, rib: numpy.ndarray, spine: numpy.ndarray, other_bone: numpy.ndarray) -> numpy.ndarray
+     |      Combines the images using max overlay (maximum intensity per pixel).
+     |      Args:
+     |          soft_tissue: Soft tissue image (NumPy array).
+     |          rib: Rib image (NumPy array).
+     |          spine: Spine image (NumPy array).
+     |          other_bone: Other bone image (NumPy array).
+     |      Returns:
+     |          Combined image as a NumPy array.
+     |
+     |  mean_blend(soft_tissue: numpy.ndarray, rib: numpy.ndarray, spine: numpy.ndarray, other_bone: numpy.ndarray) -> numpy.ndarray
+     |      Combines the images by averaging their pixel values.
+     |      Args:
+     |          soft_tissue: Soft tissue image (NumPy array).
+     |          rib: Rib image (NumPy array).
+     |          spine: Spine image (NumPy array).
+     |          other_bone: Other bone image (NumPy array).
+     |      Returns:
+     |          Combined image as a NumPy array.
+     |
+     |  weighted_addition(soft_tissue: numpy.ndarray, rib: numpy.ndarray, spine: numpy.ndarray, other_bone: numpy.ndarray, weights: list) -> numpy.ndarray
+     |      Combines the images using weighted addition.
+     |      Args:
+     |          soft_tissue: Soft tissue image (NumPy array).
+     |          rib: Rib image (NumPy array).
+     |          spine: Spine image (NumPy array).
+     |          other_bone: Other bone image (NumPy array).
+     |          weights: List of weights for each image [soft_tissue, rib, spine, other_bone].
+     |      Returns:
+     |          Combined image as a NumPy array.
+     |
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |
+     |  __dict__
+     |      dictionary for instance variables
+     |
+     |  __weakref__
+     |      list of weak references to the object
+
+FILE
+    c:\users\agares\onedrive\0 research\anychest\image\image_combine.py
+
+
+
