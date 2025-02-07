@@ -18,17 +18,19 @@ def bias_field_simulation(drr: np.ndarray, mask: np.ndarray, max_bias: float) ->
     biased_drr = np.clip(drr * bias_field, 0, 255).astype(np.uint8)
     return biased_drr, mask
 
-def histogram_equalization(drr: np.ndarray, mask: np.ndarray, process: bool) -> tuple:
+def histogram_equalization(drr: np.ndarray, mask: np.ndarray, perform : bool) -> tuple:
     """
     Applies histogram equalization to the DRR image.
     Args:
         drr: The input DRR image (NumPy array).
         mask: The corresponding mask (NumPy array).
+        perform: Perform histogram equalization or not
     Returns:
         Tuple of histogram-equalized DRR and unchanged mask (NumPy arrays).
     """
-    if not process:
-        return 
+    if perform == False:
+        return drr, mask
+    
     equalized_drr = cv2.equalizeHist(drr)
     return equalized_drr, mask
 

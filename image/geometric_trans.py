@@ -107,23 +107,29 @@ def zoom_and_crop(drr: np.ndarray, mask: np.ndarray, scale: float) -> tuple:
     """
     h, w = drr.shape[:2]
     nh, nw = int(h * scale), int(w * scale)
+    
+    # Resize (zoom-in or zoom-out)
     zoomed_drr = cv2.resize(drr, (nw, nh), interpolation=cv2.INTER_LINEAR)
     zoomed_mask = cv2.resize(mask, (nw, nh), interpolation=cv2.INTER_NEAREST)
-
-    # Center crop back to original size
-    top = (nh - h) // 2
-    left = (nw - w) // 2
-    cropped_drr = zoomed_drr[top:top + h, left:left + w]
-    cropped_mask = zoomed_mask[top:top + h, left:left + w]
     
-            # Get the original size dynamically
-    target_size = (h, w)
+    # If scaled size is smaller, pad the image to the original size
+    if scale < 1.0:  # Zoom-out
+        pad_top = (h - nh) // 2
+        pad_bottom = h - nh - pad_top
+        pad_left = (w - nw) // 2
+        pad_right = w - nw - pad_left
+        
+        zoomed_drr = cv2.copyMakeBorder(zoomed_drr, pad_top, pad_bottom, pad_left, pad_right, cv2.BORDER_CONSTANT, value=0)
+        zoomed_mask = cv2.copyMakeBorder(zoomed_mask, pad_top, pad_bottom, pad_left, pad_right, cv2.BORDER_CONSTANT, value=0)
     
-    # Resize cropped images to the target size
-    resized_drr = cv2.resize(cropped_drr, target_size, interpolation=cv2.INTER_LINEAR)
-    resized_mask = cv2.resize(cropped_mask, target_size, interpolation=cv2.INTER_NEAREST)
-
-    return resized_drr, resized_mask
+    # If scaled size is larger, crop the center
+    if scale > 1.0:  # Zoom-in
+        top = (nh - h) // 2
+        left = (nw - w) // 2
+        zoomed_drr = zoomed_drr[top:top + h, left:left + w]
+        zoomed_mask = zoomed_mask[top:top + h, left:left + w]
+    
+    return zoomed_drr, zoomed_mask
 
 def random_occlusions(drr: np.ndarray, mask: np.ndarray, num_occlusions: int, size: tuple):
     """
