@@ -46,6 +46,9 @@ FUNCTIONS
         Returns:
             NumPy array of the grayscale image.
 
+    load_image_nifti(image_path: str) -> numpy.ndarray
+        # Load NIfTI image
+
     post_processing(drr: numpy.ndarray, mask: numpy.ndarray) -> tuple
         Empty shell for post-processing the transformed image and mask.
         Args:
@@ -62,8 +65,11 @@ FUNCTIONS
         Returns:
             None
 
+    saving_nifti(image: numpy.ndarray, save_path: str)
+        # Save NIfTI image
+
 FILE
-    c:\users\agares\onedrive\0 research\anychest\image\image_trans.py
+    /home/bruce/code/Anychest/image/image_trans.py
 
 
 
@@ -112,7 +118,7 @@ FUNCTIONS
             Tuple of transformed DRR and unchanged mask (NumPy arrays).
 
 FILE
-    c:\users\agares\onedrive\0 research\anychest\image\noise_trans.py
+    /home/bruce/code/Anychest/image/noise_trans.py
 
 
 
@@ -142,15 +148,18 @@ FUNCTIONS
         Returns:
             Tuple of transformed DRR and mask (NumPy arrays).
 
-    random_occlusions(drr: numpy.ndarray, mask: numpy.ndarray, num_occlusions: int, size: tuple) -> tuple
-        Adds random occlusions to the DRR image.
+    random_occlusions(drr: numpy.ndarray, mask: numpy.ndarray, num_occlusions: int, size: tuple)
+        Apply random occlusions to the DRR image. Each occlusion gets a unique ID (0 to num_occlusions-1).
+        The mask remains unchanged.
+
         Args:
-            drr: The input DRR image (NumPy array).
-            mask: The corresponding mask (NumPy array).
-            num_occlusions: Number of occlusions to apply.
-            size: Tuple (height, width) specifying the occlusion size.
+            drr: The DRR image (NumPy array).
+            mask: The corresponding mask (NumPy array) - remains unchanged.
+            num_occlusions: The number of occlusions to apply.
+            size: A tuple specifying the size of the occlusion (height, width).
+
         Returns:
-            Tuple of occluded DRR and unchanged mask (NumPy arrays).
+            Tuple: The occluded DRR image and the unchanged mask.
 
     rotate_image(drr: numpy.ndarray, mask: numpy.ndarray, angle: float) -> tuple
         Rotates the DRR image and mask by a specified angle.
@@ -180,7 +189,7 @@ FUNCTIONS
             Tuple of zoomed and cropped DRR and mask (NumPy arrays).
 
 FILE
-    c:\users\agares\onedrive\0 research\anychest\image\geometric_trans.py
+    /home/bruce/code/Anychest/image/geometric_trans.py
 
 
 
@@ -211,7 +220,7 @@ FUNCTIONS
             Tuple of sharpened DRR and unchanged mask (NumPy arrays).
 
 FILE
-    c:\users\agares\onedrive\0 research\anychest\image\blur_sharpen_trans.py
+    /home/bruce/code/Anychest/image/blur_sharpen_trans.py
 
 
 
@@ -261,7 +270,7 @@ FUNCTIONS
             Tuple of gamma-adjusted DRR and unchanged mask (NumPy arrays).
 
 FILE
-    c:\users\agares\onedrive\0 research\anychest\image\intensity_trans.py
+    /home/bruce/code/Anychest/image/intensity_trans.py
 
 
 
@@ -300,7 +309,7 @@ FUNCTIONS
             Tuple of histogram-equalized DRR and unchanged mask (NumPy arrays).
 
 FILE
-    c:\users\agares\onedrive\0 research\anychest\image\advanced_image_adjustments.py
+    /home/bruce/code/Anychest/image/advanced_image_adjustments.py
 
 
 
@@ -361,7 +370,7 @@ CLASSES
      |      list of weak references to the object
 
 FILE
-    c:\users\agares\onedrive\0 research\anychest\image\image_combine.py
+    /home/bruce/code/Anychest/image/image_combine.py
 
 
 

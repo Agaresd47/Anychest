@@ -1,0 +1,34 @@
+Geometric Transformations:
+
+Rotation: Range: -20° to +20° (evenly sampled).
+Flip: Horizontal, Vertical (random).
+Zoom: Range: 0.9x to 1.1x (evenly sampled)
+Random Occlusions:
+num_occlusions: Range from 1 to 3 occlusions per image.
+size: Range from (20, 20) to (40, 40) pixels.
+
+
+Intensity Transformations:
+
+Brightness: Range: -10 to +10 (evenly sampled).
+Contrast: Range: 0.8 to 1.2 (evenly sampled).
+Gamma Correction: Range: 0.8 to 1.2 (evenly sampled).
+
+
+Noise Injection:
+
+Gaussian Noise: Mean = 0, std = 0.1 to 0.3 (evenly sampled).
+Speckle Noise: Variance = 0.05 to 0.2 (evenly sampled).
+
+
+Blurring/Sharpening:
+
+Gaussian Blur: Sigma = 1 to 3 (evenly sampled).
+Gaussian Sharpening: Amount = 0.5 to 1.5 (evenly sampled).
+
+
+Advanced Adjustments:
+
+Bias Field Simulation: Maximum bias = 0.1 to 0.3(evenly sampled) .
+Boundary Smoothing: Kernel size = 1 to 5 sample whole number.
+Histogram Equalization: Apply or not (binary).

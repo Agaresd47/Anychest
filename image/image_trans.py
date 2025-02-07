@@ -17,7 +17,26 @@ from blur_sharpen_trans import gaussian_blur, gaussian_sharpening
 from intensity_trans import apply_gamma_adjustment, adjust_brightness, adjust_contrast, adjust_contrast_with_curve
 from image_combine import ImageCombiner
 
+def special_case_handle(method_name, args):
+    """
+    Handles special cases for specific transformation methods.
 
+    Args:
+        method_name (str): The name of the transformation method.
+        args (list): Arguments for the transformation.
+
+    Returns:
+        tuple: Updated arguments for the transformation.
+    """
+    if method_name == "random_occlusions":
+        # Ensure arguments are correctly formatted for random_occlusions
+        if len(args) != 2 or not isinstance(args[0], int) or not isinstance(args[1], tuple):
+            raise ValueError(f"Invalid arguments for 'random_occlusions': {args}")
+        num_occlusions = int(args[0])
+        size = tuple(map(int, args[1]))
+        return num_occlusions, size
+    # Add more special cases here if needed
+    return args  # Return args as-is for non-special cases
 
 # Master API
 def apply_transformations(drr: np.ndarray, mask: np.ndarray, transform_plan: dict) -> tuple:
@@ -32,13 +51,34 @@ def apply_transformations(drr: np.ndarray, mask: np.ndarray, transform_plan: dic
     """
     # Combine global and imported methods
     all_methods = {**globals(), **sys.modules['noise_trans'].__dict__}
+    
+    # List of special methods to handle separately
+    special_methods = ["random_occlusions"]
 
     for method_name, args in transform_plan.items():
         # Resolve the method dynamically
         method = all_methods.get(method_name)
         if method is None:
             raise ValueError(f"Transformation method '{method_name}' not found.")
-        drr, mask = method(drr, mask, *args)
+
+        # Ensure args is iterable
+        if not isinstance(args, (list, tuple)):
+            args = [args]  # Convert single value to a list
+            
+            
+        try:
+            # Handle special cases
+            if method_name in special_methods:
+                args = special_case_handle(method_name, args)
+                drr, mask = method(drr, mask, *args)
+            else:
+                # Standard method handling
+                drr, mask = method(drr, mask, *args)
+        except TypeError as e:
+            print(f"TypeError encountered in method '{method_name}' with arguments: {args}")
+            raise e
+            
+            
     return drr, mask
 
 # Image Loading Function

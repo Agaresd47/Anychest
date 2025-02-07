@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import math
 
 def spatial_cropping(drr: np.ndarray, mask: np.ndarray, crop_size: tuple) -> tuple:
     """
@@ -20,8 +21,15 @@ def spatial_cropping(drr: np.ndarray, mask: np.ndarray, crop_size: tuple) -> tup
 
     cropped_drr = drr[top:top + ch, left:left + cw]
     cropped_mask = mask[top:top + ch, left:left + cw]
+    
+    # Get the original size dynamically
+    target_size = (h, w)
+    
+    # Resize cropped images to the target size
+    resized_drr = cv2.resize(cropped_drr, target_size, interpolation=cv2.INTER_LINEAR)
+    resized_mask = cv2.resize(cropped_mask, target_size, interpolation=cv2.INTER_NEAREST)
 
-    return cropped_drr, cropped_mask
+    return resized_drr, resized_mask
 
 def rotate_image(drr: np.ndarray, mask: np.ndarray, angle: float) -> tuple:
     """
@@ -76,7 +84,16 @@ def perspective_transform(drr: np.ndarray, mask: np.ndarray, points: list) -> tu
     matrix = cv2.getPerspectiveTransform(src, dst)
     transformed_drr = cv2.warpPerspective(drr, matrix, (w, h), flags=cv2.INTER_LINEAR)
     transformed_mask = cv2.warpPerspective(mask, matrix, (w, h), flags=cv2.INTER_NEAREST)
-    return transformed_drr, transformed_mask
+    
+    
+        # Get the original size dynamically
+    target_size = (h, w)
+    
+    # Resize cropped images to the target size
+    resized_drr = cv2.resize(transformed_drr, target_size, interpolation=cv2.INTER_LINEAR)
+    resized_mask = cv2.resize(transformed_mask, target_size, interpolation=cv2.INTER_NEAREST)
+    
+    return resized_drr, resized_mask
 
 def zoom_and_crop(drr: np.ndarray, mask: np.ndarray, scale: float) -> tuple:
     """
@@ -98,24 +115,47 @@ def zoom_and_crop(drr: np.ndarray, mask: np.ndarray, scale: float) -> tuple:
     left = (nw - w) // 2
     cropped_drr = zoomed_drr[top:top + h, left:left + w]
     cropped_mask = zoomed_mask[top:top + h, left:left + w]
+    
+            # Get the original size dynamically
+    target_size = (h, w)
+    
+    # Resize cropped images to the target size
+    resized_drr = cv2.resize(cropped_drr, target_size, interpolation=cv2.INTER_LINEAR)
+    resized_mask = cv2.resize(cropped_mask, target_size, interpolation=cv2.INTER_NEAREST)
 
-    return cropped_drr, cropped_mask
+    return resized_drr, resized_mask
 
-def random_occlusions(drr: np.ndarray, mask: np.ndarray, num_occlusions: int, size: tuple) -> tuple:
+def random_occlusions(drr: np.ndarray, mask: np.ndarray, num_occlusions: int, size: tuple):
     """
-    Adds random occlusions to the DRR image.
+    Apply random occlusions to the DRR image. Each occlusion gets a unique ID (0 to num_occlusions-1).
+    The mask remains unchanged.
+
     Args:
-        drr: The input DRR image (NumPy array).
-        mask: The corresponding mask (NumPy array).
-        num_occlusions: Number of occlusions to apply.
-        size: Tuple (height, width) specifying the occlusion size.
+        drr: The DRR image (NumPy array).
+        mask: The corresponding mask (NumPy array) - remains unchanged.
+        num_occlusions: The number of occlusions to apply.
+        size: A tuple specifying the size of the occlusion (height, width).
+
     Returns:
-        Tuple of occluded DRR and unchanged mask (NumPy arrays).
+        Tuple: The occluded DRR image and the unchanged mask.
     """
+    num_occlusions = math.ceil(num_occlusions)
+    
+    # Create a copy of the DRR to apply occlusions to
     occluded_drr = drr.copy()
-    for _ in range(num_occlusions):
+
+    # Generate unique occlusion IDs (uniformly distributed) for each occlusion
+    occlusion_ids = np.random.randint(0, num_occlusions, num_occlusions)  # Uniform distribution of occlusion IDs
+
+    for i in range(num_occlusions):
+        # Get image dimensions
         h, w = drr.shape[:2]
+        
+        # Randomly select the top-left corner for the occlusion
         top = np.random.randint(0, h - size[0])
         left = np.random.randint(0, w - size[1])
-        occluded_drr[top:top + size[0], left:left + size[1]] = 0
+
+        # Apply the occlusion: set the pixel values in the region to the occlusion ID
+        occluded_drr[top:top + size[0], left:left + size[1]] = occlusion_ids[i]  # Apply unique occlusion ID
+
     return occluded_drr, mask
